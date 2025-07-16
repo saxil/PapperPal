@@ -1,5 +1,6 @@
 from langchain.vectorstores import Chroma, FAISS
-from langchain.embeddings import OpenAIEmbeddings, SentenceTransformerEmbeddings, OllamaEmbeddings
+from langchain.embeddings import OpenAIEmbeddings, SentenceTransformerEmbeddings
+from langchain_ollama import OllamaEmbeddings
 
 def create_vectorstore(chunks, embedding_model_name, vectorstore_type="chroma"):
     """Creates a vector store from document chunks."""

@@ -1,6 +1,7 @@
 from langchain.chains import RetrievalQA
 from langchain.prompts import PromptTemplate
-from langchain.chat_models import ChatOpenAI, ChatOllama
+from langchain.chat_models import ChatOpenAI
+from langchain_ollama import ChatOllama
 from utils.prompts import QUESTION_ANSWERING_PROMPT
 
 def create_rag_chain(vectorstore, llm_backend, api_key=None):

@@ -70,14 +70,18 @@ if uploaded_files:
             answer = response["result"]
             source_documents = response["source_documents"]
 
-            # Extract page numbers and format them
-            page_numbers = []
+            # Extract unique page numbers and format them
+            page_numbers = set()
             for doc in source_documents:
                 if "page_number" in doc.metadata:
-                    page_numbers.append(str(doc.metadata["page_number"] + 1)) # +1 because page numbers are 0-indexed
+                    page_numbers.add(str(doc.metadata["page_number"] + 1)) # +1 because page numbers are 0-indexed
             
             if page_numbers:
-                answer += f" (Reference: Page(s) {', '.join(page_numbers)})"
+                sorted_page_numbers = sorted(list(page_numbers))
+                if len(sorted_page_numbers) == 1:
+                    answer += f" (Reference: Page {sorted_page_numbers[0]})"
+                else:
+                    answer += f" (Reference: Pages {', '.join(sorted_page_numbers)})"
 
             st.session_state.messages.append({"role": "assistant", "content": answer})
             with st.chat_message("assistant"):

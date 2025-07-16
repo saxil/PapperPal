@@ -1,6 +1,7 @@
 from langchain.chains.summarize import load_summarize_chain
 from langchain.prompts import PromptTemplate
-from langchain.chat_models import ChatOpenAI, ChatOllama
+from langchain.chat_models import ChatOpenAI
+from langchain_ollama import ChatOllama
 from utils.prompts import SUMMARIZATION_PROMPT
 
 def summarize_document(chunks, llm_backend, api_key=None):
