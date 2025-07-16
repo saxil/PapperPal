@@ -1,0 +1,10 @@
+streamlit
+langchain
+chromadb
+faiss-cpu
+openai
+sentence-transformers
+ollama
+python-dotenv
+pymupdf
+pdfplumber
