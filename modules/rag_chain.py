@@ -13,7 +13,8 @@ def create_rag_chain(vectorstore, llm_backend, api_key=None):
     if "openai" in llm_backend.lower():
         llm = ChatOpenAI(model_name=llm_backend, openai_api_key=api_key)
     elif "ollama" in llm_backend.lower():
-        llm = ChatOllama(model=llm_backend)
+        model_name = llm_backend.split('/')[-1]
+        llm = ChatOllama(model=model_name)
     else:
         # Assuming OpenRouter format, which is compatible with OpenAI's API
         llm = ChatOpenAI(model_name=llm_backend, openai_api_base="https://openrouter.ai/api/v1", openai_api_key=api_key)

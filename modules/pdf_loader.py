@@ -1,4 +1,4 @@
-import PyMuPDF
+import fitz as PyMuPDF
 import pdfplumber
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 

@@ -6,7 +6,8 @@ def create_vectorstore(chunks, embedding_model_name, vectorstore_type="chroma"):
     if "openai" in embedding_model_name.lower():
         embedding_function = OpenAIEmbeddings()
     elif "ollama" in embedding_model_name.lower():
-        embedding_function = OllamaEmbeddings(model=embedding_model_name)
+        model_name = embedding_model_name.split('/')[-1]
+        embedding_function = OllamaEmbeddings(model=model_name)
     else:
         embedding_function = SentenceTransformerEmbeddings(model_name=embedding_model_name)
 

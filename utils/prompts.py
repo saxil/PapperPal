@@ -11,6 +11,6 @@ Helpful Answer:
 SUMMARIZATION_PROMPT = """
 Summarize the following academic paper into 3 concise bullet points.
 Text:
-{chunked_text}
+{text}
 Summary:
 """

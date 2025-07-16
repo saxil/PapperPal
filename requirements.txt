@@ -6,5 +6,5 @@ openai
 sentence-transformers
 ollama
 python-dotenv
-pymupdf
+PyMuPDF>=1.22.0
 pdfplumber
