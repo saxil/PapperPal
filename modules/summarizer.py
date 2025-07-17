@@ -1,8 +1,7 @@
 from langchain.chains.summarize import load_summarize_chain
 from langchain.prompts import PromptTemplate
-from langchain.chat_models import ChatOpenAI
-from langchain_ollama import ChatOllama
 from utils.prompts import SUMMARIZATION_PROMPT
+from utils.llm_factory import get_llm
 
 def summarize_document(chunks, llm_backend, api_key=None):
     """Summarizes the document using a map-reduce chain."""
@@ -11,18 +10,13 @@ def summarize_document(chunks, llm_backend, api_key=None):
         input_variables=["text"]
     )
 
-    if "openai" in llm_backend.lower():
-        llm = ChatOpenAI(model_name=llm_backend, openai_api_key=api_key)
-    elif "ollama" in llm_backend.lower():
-        model_name = llm_backend.split('/')[-1]
-        llm = ChatOllama(model=model_name)
-    else:
-        llm = ChatOpenAI(model_name=llm_backend, openai_api_base="https://openrouter.ai/api/v1", openai_api_key=api_key)
+    llm = get_llm(llm_backend, api_key)
 
     chain = load_summarize_chain(
         llm,
-        chain_type="stuff",
-        prompt=prompt
+        chain_type="map_reduce",
+        map_prompt=prompt,
+        combine_prompt=prompt
     )
 
     summary = chain.run(chunks)

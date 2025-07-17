@@ -19,6 +19,12 @@ with st.sidebar:
     llm_backend = st.selectbox("Choose LLM Backend", ["openai/gpt-3.5-turbo", "ollama/mistral", "openrouter/google/gemini-pro-1.5"])
     api_key = st.text_input("Enter API Key (if not using Ollama)", type="password")
     summarize_button = st.button("Summarize PDF")
+    clear_chat_button = st.button("Clear Chat")
+
+if clear_chat_button:
+    st.session_state.messages = []
+    if "vectorstore" in st.session_state:
+        del st.session_state.vectorstore
 
 # Main chat interface
 if 'messages' not in st.session_state:
@@ -43,7 +49,7 @@ if uploaded_files:
                 with open(file_path, "wb") as f:
                     f.write(uploaded_file.getbuffer())
 
-                chunks = load_and_chunk_pdf(file_path)
+                chunks = load_and_chunk_file(file_path)
                 all_chunks.extend(chunks)
 
             st.session_state.chunks = all_chunks
@@ -86,3 +92,8 @@ if uploaded_files:
             st.session_state.messages.append({"role": "assistant", "content": answer})
             with st.chat_message("assistant"):
                 st.markdown(answer)
+
+            with st.expander("Source Documents"):
+                for doc in source_documents:
+                    st.markdown(f"**Source:** {doc.metadata['source']}, **Page:** {doc.metadata['page_number'] + 1}")
+                    st.markdown(doc.page_content)
