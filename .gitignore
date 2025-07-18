@@ -18,3 +18,9 @@ commit_message.txt
 
 # Ignore debug log file
 debug.log
+
+# Ignore chat histories
+chat_histories/
+
+# Ignore desktop.ini
+desktop.ini

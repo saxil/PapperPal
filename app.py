@@ -13,6 +13,9 @@ from utils.prompts import ELI5_PROMPT, GENERATE_QUESTIONS_PROMPT, ENTITY_EXTRACT
 
 load_dotenv()
 
+if 'messages' not in st.session_state:
+    st.session_state.messages = []
+
 st.set_page_config(page_title="PaperPal", page_icon="🤖")
 st.title("PaperPal: Chat with your Documents")
 
@@ -27,8 +30,19 @@ with st.sidebar:
     clear_chat_button = st.button("Clear Chat")
 
     st.header("Export")
-    export_chat_button = st.button("Export Chat")
-    export_summary_button = st.button("Export Summary")
+    st.download_button(
+        label="Export Chat",
+        data="\n".join([f"{message['role']}: {message['content']}" for message in st.session_state.messages]),
+        file_name="chat_history.txt",
+        mime="text/plain",
+    )
+    if "summary" in st.session_state:
+        st.download_button(
+            label="Export Summary",
+            data=st.session_state.summary,
+            file_name="summary.txt",
+            mime="text/plain",
+        )
 
     st.header("Chat History")
     chat_history_name = st.text_input("Save chat history as:")
@@ -52,33 +66,7 @@ if load_chat_history_option != "None":
         st.session_state.messages = json.load(f)
     st.success(f"Chat history loaded from {load_chat_history_option}")
 
-if export_chat_button:
-    chat_history = "\n".join([f"{message['role']}: {message['content']}" for message in st.session_state.messages])
-    st.download_button(
-        label="Download Chat History",
-        data=chat_history,
-        file_name="chat_history.txt",
-        mime="text/plain"
-    )
-
-if export_summary_button and "summary" in st.session_state:
-    st.download_button(
-        label="Download Summary",
-        data=st.session_state.summary,
-        file_name="summary.txt",
-        mime="text/plain"
-    )
-
-if clear_chat_button:
-    st.session_state.messages = []
-    if "vectorstore" in st.session_state:
-        del st.session_state.vectorstore
-    st.success("Chat cleared!")
-
 # Main chat interface
-if 'messages' not in st.session_state:
-    st.session_state.messages = []
-
 for i, message in enumerate(st.session_state.messages):
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
