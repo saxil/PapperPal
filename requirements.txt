@@ -10,3 +10,4 @@ PyMuPDF>=1.22.0
 pdfplumber
 python-pptx
 python-docx
+beautifulsoup4
